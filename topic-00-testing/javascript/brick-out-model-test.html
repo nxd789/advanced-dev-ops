@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brick Out Model Tests</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        #output {
+            background-color: #000;
+            padding: 20px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .pass {
+            color: #4CAF50;
+        }
+        .fail {
+            color: #f44336;
+        }
+        .summary {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brick Out Model Unit Tests</h1>
+    <div id="output"></div>
+
+    <script>
+        // Capture console.log for display
+        const output = document.getElementById('output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            const message = args.join(' ');
+            const div = document.createElement('div');
+            
+            if (message.includes('✓')) {
+                div.className = 'pass';
+            } else if (message.includes('✗')) {
+                div.className = 'fail';
+            } else if (message.includes('passed') || message.includes('failed')) {
+                div.className = 'summary';
+            }
+            
+            div.textContent = message;
+            output.appendChild(div);
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            const message = args.join(' ');
+            const div = document.createElement('div');
+            div.className = 'fail';
+            div.textContent = 'ERROR: ' + message;
+            output.appendChild(div);
+            originalError.apply(console, args);
+        };
+        
+        // Catch any unhandled errors
+        window.addEventListener('error', function(e) {
+            const div = document.createElement('div');
+            div.className = 'fail';
+            div.textContent = 'UNCAUGHT ERROR: ' + e.message + ' at ' + e.filename + ':' + e.lineno;
+            output.appendChild(div);
+        });
+        
+        console.log('Loading tests...');
+    </script>
+    
+    <!-- Load and run the tests as ES6 module -->
+    <script type="module">
+        try {
+            console.log('Attempting to import tests...');
+            const { runner } = await import('./brick-out-model-test.js');
+            console.log('Tests loaded successfully, running...');
+            runner.run();
+        } catch (error) {
+            console.error('Failed to load or run tests:', error);
+            console.error('Error stack:', error.stack);
+        }
+    </script>
+</body>
+</html>

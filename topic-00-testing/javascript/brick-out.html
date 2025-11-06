@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brick Out - MVC Architecture</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            font-family: Arial, sans-serif;
+        }
+        #canvas-container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        p {
+            margin-top: 10px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <h1>Brick Out - MVC</h1>
+        <p>Move mouse to control paddle • Click to start</p>
+    </div>
+
+    <script type="module">
+        import { BrickOutModel } from './brick-out-model.js';
+        
+        // Model
+        let game;
+        
+        // Setup (initialize model) - make global for P5.js
+        window.setup = function() {
+            let canvas = createCanvas(705, 500);
+            canvas.parent('canvas-container');
+            
+            game = new BrickOutModel(width, height);
+        }
+
+        // Main game loop - updates model and renders view - make global for P5.js
+        window.draw = function() {
+            // Update model
+            game.update();
+            
+            // Render view
+            renderView(game);
+        }
+
+        // Controller - handles mouse input - make global for P5.js
+        window.mouseMoved = function() {
+            game.movePaddle(mouseX);
+        }
+        
+        window.mouseDragged = function() {
+            game.movePaddle(mouseX);
+        }
+
+        window.mousePressed = function() {
+            game.startGame();
+        }
+
+        // View - renders the current state of the model
+        function renderView(model) {
+            background(20);
+            
+            if (model.gameOver) {
+                displayGameOver(model);
+                return;
+            }
+            
+            if (model.gameWon) {
+                displayWin(model);
+                return;
+            }
+            
+            // Render bricks
+            for (let brick of model.bricks) {
+                renderBrick(brick);
+            }
+            
+            // Render paddle
+            renderPaddle(model.paddle);
+            
+            // Render ball
+            renderBall(model.ball);
+            
+            // Display UI
+            displayInfo(model);
+        }
+
+        function renderBrick(brick) {
+            // Convert plain JS color object to P5.js color
+            fill(brick.color.r, brick.color.g, brick.color.b);
+            stroke(0);
+            strokeWeight(2);
+            rect(brick.x, brick.y, brick.width, brick.height, 3);
+        }
+
+        function renderPaddle(paddle) {
+            fill(100, 200, 255);
+            stroke(255);
+            strokeWeight(2);
+            rectMode(CENTER);
+            rect(paddle.x, paddle.y, paddle.width, paddle.height, 5);
+            rectMode(CORNER);
+        }
+
+        function renderBall(ball) {
+            fill(255);
+            stroke(200);
+            strokeWeight(2);
+            circle(ball.x, ball.y, ball.size);
+        }
+
+        function displayInfo(model) {
+            fill(255);
+            textSize(16);
+            textAlign(LEFT);
+            text(`Score: ${model.score}`, 10, 25);
+            text(`Lives: ${model.lives}`, 10, 45);
+            
+            if (!model.gameStarted && !model.gameOver && !model.gameWon) {
+                textAlign(CENTER);
+                textSize(20);
+                text('Click to Launch Ball', width/2, height - 30);
+            }
+        }
+
+        function displayGameOver(model) {
+            background(20);
+            fill(255, 0, 0);
+            textSize(48);
+            textAlign(CENTER);
+            text('GAME OVER', width/2, height/2 - 40);
+            
+            fill(255);
+            textSize(24);
+            text(`Final Score: ${model.score}`, width/2, height/2 + 20);
+            textSize(16);
+            text('Click to Play Again', width/2, height/2 + 60);
+        }
+
+        function displayWin(model) {
+            background(20);
+            fill(0, 255, 0);
+            textSize(48);
+            textAlign(CENTER);
+            text('YOU WIN!', width/2, height/2 - 40);
+            
+            fill(255);
+            textSize(24);
+            text(`Final Score: ${model.score}`, width/2, height/2 + 20);
+            textSize(16);
+            text('Click to Play Again', width/2, height/2 + 60);
+        }
+    </script>
+</body>
+</html>

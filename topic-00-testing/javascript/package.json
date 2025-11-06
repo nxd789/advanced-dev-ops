@@ -1,0 +1,22 @@
+{
+  "name": "brick-out-p5js",
+  "version": "1.0.0",
+  "description": "Brick Out game with P5.js - MVC architecture with unit tests",
+  "type": "module",
+  "scripts": {
+    "test": "node brick-out-model-test.js",
+    "test:cucumber": "cucumber-js",
+    "test:all": "npm test && npm run test:cucumber"
+  },
+  "keywords": [
+    "p5js",
+    "game",
+    "breakout",
+    "mvc"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cucumber/cucumber": "^12.2.0"
+  }
+}
