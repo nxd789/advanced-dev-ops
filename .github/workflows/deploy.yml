@@ -3,6 +3,12 @@ name: Deployment
 on:
   workflow_dispatch:
 
+env: 
+  HOST: cassini.cs.kent.edu
+  USER: test123
+  TARGET: test123@cassini.cs.kent.edu
+  RUN: ssh -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test123@cassini.cs.kent.edu
+
 jobs:
   deployment:
     name: Deploy Software
@@ -19,7 +25,11 @@ jobs:
           name: id_ed25519
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      - name: Examine Server
+      - name: Examine Server Environment
         run: | 
-          echo $ ssh test123@cassini.cs.kent.edu ls -la 
-          ssh test123@cassini.cs.kent.edu ls -la 
+          echo $ $RUN hostname
+          $RUN hostname 
+          echo $ $RUN pwd
+          $RUN pwd
+          echo $ $RUN ls -la 
+          $RUN ls -la 

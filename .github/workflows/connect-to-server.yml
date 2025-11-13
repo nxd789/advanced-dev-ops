@@ -1,0 +1,25 @@
+name: Test Connection to Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    name: Connect to server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ID_ED25519 }}
+          name: id_ed25519
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      - name: Examine Server
+        run: | 
+          echo $ ssh test123@cassini.cs.kent.edu ls -la 
+          ssh test123@cassini.cs.kent.edu ls -la 
