@@ -5,9 +5,9 @@ on:
 
 env: 
   HOST: cassini.cs.kent.edu
-  USER: test123
-  TARGET: test123@cassini.cs.kent.edu
-  RUN: ssh -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test123@cassini.cs.kent.edu
+  USER: nxd789
+  TARGET: nxd789@cassini.cs.kent.edu
+  RUN: ssh -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no nxd789@cassini.cs.kent.edu
   COPY: scp -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 jobs:
