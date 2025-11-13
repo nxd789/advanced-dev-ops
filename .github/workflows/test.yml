@@ -30,11 +30,11 @@ jobs:
           echo $ cd topic-00-testing/javascript 
           cd topic-00-testing/javascript 
           echo $ npm install
-          npm test
+          npm run test
 
       - name: Run cucumber tests
         run: |
           echo $ cd topic-00-testing/javascript 
           cd topic-00-testing/javascript 
           echo $ npm install
-          npm test:cucumber
+          npm run test:cucumber
