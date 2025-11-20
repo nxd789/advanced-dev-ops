@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+simplestat/__init__.py
+simplestat/stats.py
+simplestat.egg-info/PKG-INFO
+simplestat.egg-info/SOURCES.txt
+simplestat.egg-info/dependency_links.txt
+simplestat.egg-info/top_level.txt
