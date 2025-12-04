@@ -1,0 +1,24 @@
+---
+- name: Configure local Codespace VM
+  hosts: local
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install htop
+      apt:
+        name: htop
+        state: present
+
+    - name: Ensure /opt/demo exists
+      file:
+        path: /opt/demo
+        state: directory
+
+    - name: Create a text file
+      copy:
+        dest: /opt/demo/hello.txt
+        content: "Hello from Ansible in Codespaces.\n"

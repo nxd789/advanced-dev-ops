@@ -1,0 +1,21 @@
+---
+- name: Configure application server
+  hosts: appservers
+  become: yes
+
+  tasks:
+    - name: Update apt repositories
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+
+    - name: Ensure application directory exists
+      file:
+        path: /opt/myapp
+        state: directory

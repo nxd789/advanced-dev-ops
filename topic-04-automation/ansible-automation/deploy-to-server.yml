@@ -1,0 +1,33 @@
+---
+- name: Deploy demo application
+  hosts: remote
+  become: yes
+
+  tasks:
+    - name: Install Python and pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+        update_cache: yes
+
+    - name: Ensure application directory exists
+      file:
+        path: /opt/myapp
+        state: directory
+
+    - name: Upload application file
+      copy:
+        src: example-app/app.py
+        dest: /opt/myapp/app.py
+
+    - name: Upload requirements file
+      copy:
+        src: example-app/requirements.txt
+        dest: /opt/myapp/requirements.txt
+
+    - name: Install Python dependencies
+      pip:
+        requirements: /opt/myapp/requirements.txt
+
